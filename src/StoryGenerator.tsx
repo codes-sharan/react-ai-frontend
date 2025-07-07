@@ -44,7 +44,7 @@ const StoryGenerator: React.FC<Props> = ({ onStoryGenerated }) => {
         <textarea
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Enter your story topic here..."
+          placeholder="Enter your story topic..."
           rows={4}
           className="p-4 text-base border border-blue-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
