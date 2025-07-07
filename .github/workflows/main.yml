@@ -11,13 +11,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Use Node.js 22.16
+      - name: Use Node.js 24.3.0
         uses: actions/setup-node@v4
         with:
-          node-version: 22.16.0
+          node-version: 24.3.0
 
-      - name: Set npm version to 10.9.2
-        run: pnpm install -g npm@10.9.2
+      - name: Set npm version to 11.4.2
+        run: pnpm install -g npm@11.4.2
 
       - name: Install dependencies
         run: pnpm install
