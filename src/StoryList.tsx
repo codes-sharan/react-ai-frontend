@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+
+
+
+
 type Story = {
   id: number;
   prompt: string;
@@ -14,6 +18,13 @@ type Pagination = {
   has_next: boolean;
   has_previous: boolean;
 };
+
+
+type ApiResponse = {
+  completions: Story[];
+  pagination: Pagination;
+};
+
 
 const StoryList: React.FC = () => {
   const [stories, setStories] = useState<Story[]>([]);
@@ -29,20 +40,21 @@ const StoryList: React.FC = () => {
 
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const fetchStories = async (page = 1) => {
-    setLoading(true);
-    setError("");
+const fetchStories = async (page = 1) => {
+  setLoading(true);
+  setError("");
 
-    try {
-      const { data } = await axios.get(`${API_URL}/completions?page=${page}`);
-      setStories(data.completions);
-      setPagination(data.pagination);
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Failed to fetch stories.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    const { data } = await axios.get<ApiResponse>(`${API_URL}/completions?page=${page}`);
+    setStories(data.completions);
+    setPagination(data.pagination);
+  } catch (err: any) {
+    setError(err.response?.data?.error || "Failed to fetch stories.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     fetchStories();

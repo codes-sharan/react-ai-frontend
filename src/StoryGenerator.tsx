@@ -13,29 +13,34 @@ const StoryGenerator: React.FC<Props> = ({ onStoryGenerated }) => {
 
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!prompt.trim()) return;
+interface ApiResponse {
+  response: string;
+}
 
-    setLoading(true);
-    setError("");
-    setStory("");
+const handleSubmit = async (e: FormEvent) => {
+  e.preventDefault();
+  if (!prompt.trim()) return;
 
-    try {
-      const { data } = await axios.post(
-        `${API_URL}/complete/`,
-        { prompt },
-        { headers: { "Content-Type": "application/json" } }
-      );
-      setStory(data.response);
-      setPrompt("");
-      onStoryGenerated?.(); // Trigger refresh in parent
-    } catch (err: any) {
-      setError(err.response?.data?.error || err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+  setError("");
+  setStory("");
+
+  try {
+    const { data } = await axios.post<ApiResponse>(
+      `${API_URL}/complete/`,
+      { prompt },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    setStory(data.response);
+    setPrompt("");
+    onStoryGenerated?.(); // Trigger refresh in parent
+  } catch (err: any) {
+    setError(err.response?.data?.error || err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-6 w-full">
