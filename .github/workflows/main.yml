@@ -1,36 +1,36 @@
+name: CI/CD - Build and Deploy Vite App to S3
+
 on:
   push:
-    branches:
-      - main
+    branches: [main]  # Adjust if your default branch is different
+  pull_request:
+    branches: [main]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: ⬇️ Checkout code
         uses: actions/checkout@v4
 
-      - name: Use Node.js 22.16
+      - name: 🟢 Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.16.0
+          node-version: 18  # Or your preferred version
 
-      - name: Set npm version to 10.9.2
-        run: npm install -g npm@10.9.2
+      - name: 📦 Install dependencies
+        run: npm ci
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build React App
+      - name: 🛠️ Build project
         run: npm run build
 
-      - name: Sync build folder to S3
+      - name: 📤 Deploy to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
-          args: --delete
+          args: --acl public-read --delete
         env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_S3_BUCKET: ${{ secrets.S3_BUCKET_NAME }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
