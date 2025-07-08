@@ -44,7 +44,7 @@ const handleSubmit = async (e: FormEvent) => {
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-6 w-full">
-      <h1 className="text-2xl font-bold text-blue-700 mb-4">✨ AI Story Generator by Sharan Panthi</h1>
+      <h1 className="text-2xl font-bold text-blue-700 mb-4">✨ AI Story Generator by Sharan</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <textarea
           value={prompt}
